@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block title %}{{ package['name'] }}{% endblock %}
+{% block description %}{{ package['summary'] }}{% endblock %}
+{% block id %}No ID{% endblock %}
+{% block content %}
+{% set package_details = ['description', 'size', 'filename', 'version', 'release', 'epoch', 'arch', 'license', 'url', 'time'] %}
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#details" role="tab" data-toggle="tab">Details</a></li>
+  <li><a href="#files" role="tab" data-toggle="tab">Files <span class="badge">{{package['files']['file']|length}}</span></a></li>
+  <li><a href="#provides" role="tab" data-toggle="tab">Provides <span class="badge">{{package['provides']|length}}</span></a></li>
+  <li><a href="#requires" role="tab" data-toggle="tab">Requires <span class="badge">{{package['requires']|length}}</span></a></li>
+  <li><a href="#changelog" role="tab" data-toggle="tab">Changelog <span class="badge">{{package['changelog']|length}}</span></a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="details">
+    <br />
+    {% for item in package_details %}
+    <dl>
+      <dt>{{ item | capitalize }}</dt>
+      <dd>{{ package[item] }}</dd>
+    </dl>
+    {% endfor %}
+  </div>
+  <div class="tab-pane" id="files">
+    <table class="table table-striped">
+      <tr>
+        <th>Type</th>
+        <th>Path</th>
+      </tr>
+      {%- for type, values in package['files'].iteritems() %}
+      {%- for value in values %}
+      <tr>
+        <td>{{ type }}</td>
+        <td>{{ value }}</td>
+      </tr>
+      {%- endfor %}
+      {%- endfor %}
+    </table>
+  </div>
+  <div class="tab-pane" id="provides">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Version</th>
+        <th>Release</th>
+        <th>Epoch</th>
+        <th>Flags</th>
+      </tr>
+      {% for item in package['provides'] %}
+      <tr>
+        <td>{{ item['name'] }}</td>
+        <td>{{ item['version'] }}</td>
+        <td>{{ item['release'] }}</td>
+        <td>{{ item['epoch'] }}</td>
+        <td>{{ item['flags'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="tab-pane" id="requires">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Version</th>
+        <th>Release</th>
+        <th>Epoch</th>
+        <th>Flags</th>
+      </tr>
+      {% for item in package['requires'] %}
+      <tr>
+        <td>{{ item['name'] }}</td>
+        <td>{{ item['version'] }}</td>
+        <td>{{ item['release'] }}</td>
+        <td>{{ item['epoch'] }}</td>
+        <td>{{ item['flags'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="tab-pane" id="changelog">
+    {% for item in package['changelog'] | reverse %}
+    <div class="panel panel-default">
+      <div class="panel-heading">{{ item[1] }} ({{ item[0] | epoch2date }})</div>
+      <div class="panel-body"><pre>{{ item[2] | nl2br }}</pre></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

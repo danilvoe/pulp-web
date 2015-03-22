@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Sync Details{% endblock %}
+{% block description %}{{ details['started'] }} - {{ details['completed'] }}{% endblock %}
+{% block id %}No ID{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#details" role="tab" data-toggle="tab">Details</a></li>
+  <li><a href="#packages" role="tab" data-toggle="tab">Packages <span class="badge">{{packages|length}}</span></a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="details">
+    <ul>
+      <li>Started: {{ details['started'] }}</li>
+      <li>Completed: {{ details['completed'] }}</li>
+      <li>Added: {{ details['added_count'] }}</li>
+      <li>Updated: {{ details['updated_count'] }}</li>
+      <li>Removed: {{ details['removed_count'] }}</li>
+      <li>Errors: {{ details['error_message'] | default('None') }}</li>
+    </ul>
+  </div>
+  <div class="tab-pane" id="packages">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Summary</th>
+        <th>Version</th>
+        <th>Release</th>
+        <th>Epoch</th>
+        <th>Arch</th>
+        <th>Filename</th>
+        <th>Type</th>
+      </tr>
+      {%- for item in packages %}
+      <tr>
+        <td>
+          <a href="/packages/{{ item['unit_id'] }}/?type={{ item['unit_type_id'] }}">
+            {{ item['metadata']['name'] }}
+          </a>
+        </td>
+        <td>{{ item['metadata']['summary'] }}</td>
+        <td>{{ item['metadata']['version'] }}</td>
+        <td>{{ item['metadata']['release'] }}</td>
+        <td>{{ item['metadata']['epoch'] }}</td>
+        <td>{{ item['metadata']['arch'] }}</td>
+        <td>{{ item['metadata']['filename'] }}</td>
+        <td>{{ item['unit_type_id'] }}</td>
+      </tr>
+      {%- endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

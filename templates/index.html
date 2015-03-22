@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}Pulp Web Home{% endblock %}
+{% block id %}No ID{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#repos" role="tab" data-toggle="tab">Repositories <span class="badge">{{repos|length}}</span></a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="repos">
+    <ul>
+      {%- for item in repos %}
+      <li><a href=/repos/{{ item['id'] }}>{{ item['display_name'] }}</a></li>
+      {%- endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}
